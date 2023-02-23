@@ -1,4 +1,4 @@
-module github.com/xixiwang/xlog
+module github.com/xixiwang12138/xlog
 
 go 1.19
 
