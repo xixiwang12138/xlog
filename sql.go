@@ -34,5 +34,5 @@ func (l *gormLogger) Error(ctx context.Context, s string, i ...interface{}) {
 func (l *gormLogger) Trace(ctx context.Context, begin time.Time, fc func() (sql string, rowsAffected int64), err error) {
 	elapsed := time.Since(begin)
 	sql, rows := fc()
-	l.Info(ctx, fmt.Sprintf("[SQL] %s => [%dms] | rows: %d\n", sql, elapsed.Milliseconds(), rows))
+	l.Info(ctx, fmt.Sprintf("[SQL] %s ==> (%dms) | rows: %d", sql, elapsed.Milliseconds(), rows))
 }
