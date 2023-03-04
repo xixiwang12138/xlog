@@ -29,7 +29,9 @@ func TracingLogger(ctxGenerator func() context.Context) gin.HandlerFunc {
 		ctx.Next()
 		ctx.Header(ReqHeader, traceId)
 		end := time.Now()
-		xl.Infof("%s		%s		%.3f", ctx.Request.Method, ctx.Request.RequestURI, end.UnixMilli()-start.UnixMilli())
+		xl.SetFlags(Ldate | Ltime)
+		xl.Infof("%s %s %d", ctx.Request.Method, ctx.Request.RequestURI, end.UnixMilli()-start.UnixMilli())
+		xl.SetFlags(Ldefault)
 	}
 }
 

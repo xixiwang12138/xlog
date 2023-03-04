@@ -20,7 +20,7 @@ func (l *gormLogger) Info(ctx context.Context, s string, i ...interface{}) {
 	if !ok {
 		panic("invalid parameter in gorm, first must pass xlog pointer")
 	}
-	xl.SetFlags(LstdFlags)
+	xl.SetFlags(Ldate | Ltime)
 	xl.Info(s)
 	xl.SetFlags(Ldefault)
 }
@@ -34,5 +34,5 @@ func (l *gormLogger) Error(ctx context.Context, s string, i ...interface{}) {
 func (l *gormLogger) Trace(ctx context.Context, begin time.Time, fc func() (sql string, rowsAffected int64), err error) {
 	elapsed := time.Since(begin)
 	sql, rows := fc()
-	l.Info(ctx, fmt.Sprintf("[SQL] %dms %s rows: %d\n", elapsed.Milliseconds(), sql, rows))
+	l.Info(ctx, fmt.Sprintf("[SQL] %s => [%dms] | rows: %d\n", sql, elapsed.Milliseconds(), rows))
 }
