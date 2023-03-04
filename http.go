@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
 var NotRegisterMiddleware = errors.New("not register middleware tracing logger")
@@ -19,6 +20,7 @@ func TracingLogger(ctxGenerator func() context.Context) gin.HandlerFunc {
 			traceId = RandString(DefaultReqIdLen)
 			ctx.Header(ReqHeader, traceId)
 		}
+		start := time.Now()
 		xl := NewXLogger(traceId)
 		if ctxGenerator != nil {
 			xl.Context = ctxGenerator()
@@ -26,6 +28,8 @@ func TracingLogger(ctxGenerator func() context.Context) gin.HandlerFunc {
 		ctx.Set(hLoggerGinContext, xl)
 		ctx.Next()
 		ctx.Header(ReqHeader, traceId)
+		end := time.Now()
+		xl.Infof("%s		%s		%.3f", ctx.Request.Method, ctx.Request.RequestURI, end.UnixMilli()-start.UnixMilli())
 	}
 }
 
