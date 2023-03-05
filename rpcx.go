@@ -19,7 +19,7 @@ func (handler *serverPreHandle) PostReadRequest(ctx context.Context, r *protocol
 		if ok {
 			xl.reqId = reqId
 		}
-		xl.Infof("[RPC Reply] %s, Args: %+v \n", r.ServiceMethod, r)
+		xl.Infof("[RPC Reply] %s, Args: %s \n", r.ServiceMethod, string(r.Payload))
 	}
 	return nil
 }
