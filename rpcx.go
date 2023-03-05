@@ -18,7 +18,7 @@ func (handler *serverPreHandle) PostReadRequest(ctx context.Context, r *protocol
 		xl := NewLogger()
 		xl.SetFlags(Ldate | Ltime | Llevel)
 		if ok {
-			xl.reqId = reqId
+			xl.SetPrefix("[" + reqId + "]")
 		}
 		xl.Infof("[RPC Handle] %s, Args: %s \n", r.ServiceMethod, string(r.Payload))
 	}
@@ -33,7 +33,7 @@ func (handler *serverAfterHandle) PreWriteResponse(ctx context.Context, r *proto
 		xl := NewLogger()
 		xl.SetFlags(Ldate | Ltime | Llevel)
 		if ok {
-			xl.reqId = reqId
+			xl.SetPrefix("[" + reqId + "]")
 		}
 		if err != nil {
 			xl.Error("[Rpc Server Internal] Handle: %s, error: %s", r.ServiceMethod, err.Error())
