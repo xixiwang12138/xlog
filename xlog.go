@@ -5,10 +5,6 @@ import (
 	"os"
 )
 
-var (
-	RequestIdKey = "X-request-Id"
-)
-
 type XLogger struct {
 	*Logger
 	context.Context
@@ -38,7 +34,7 @@ func NewLogger() *XLogger {
 }
 
 func NewCtxLogger(ctx context.Context) *XLogger {
-	reqId := ctx.Value(RequestIdKey).(string)
+	reqId := ctx.Value(ReqHeader).(string)
 	prefix := "[" + reqId + "]"
 	return &XLogger{
 		Logger:  New(os.Stdout, prefix, Ldefault),

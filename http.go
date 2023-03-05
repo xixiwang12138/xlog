@@ -17,7 +17,7 @@ func TracingLogger(ctxGenerator func() context.Context) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		traceId := ctx.GetHeader(ReqHeader)
 		if traceId == "" {
-			traceId = RandString(DefaultReqIdLen)
+			traceId = GenerateRequestId(DefaultReqIdLen)
 			ctx.Header(ReqHeader, traceId)
 		}
 		start := time.Now()
