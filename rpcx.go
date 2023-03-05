@@ -16,10 +16,11 @@ func (handler *serverPreHandle) PostReadRequest(ctx context.Context, r *protocol
 	reqId, ok := r.Metadata[ReqHeader]
 	if !r.IsOneway() && !r.IsHeartbeat() {
 		xl := NewLogger()
+		xl.SetFlags(Ldate | Ltime | Llevel)
 		if ok {
 			xl.reqId = reqId
 		}
-		xl.Infof("[RPC Reply] %s, Args: %s \n", r.ServiceMethod, string(r.Payload))
+		xl.Infof("[RPC Handle] %s, Args: %s \n", r.ServiceMethod, string(r.Payload))
 	}
 	return nil
 }
@@ -38,7 +39,7 @@ func (handler *serverAfterHandle) PreWriteResponse(ctx context.Context, r *proto
 			xl.Error("[Rpc Server Internal] Handle: %s, error: %s", r.ServiceMethod, err.Error())
 			return nil
 		}
-		xl.Infof("[RPC Handle] %s, Response: %s \n", r.ServiceMethod, string(resp.Payload))
+		xl.Infof("[RPC Reply] %s, Response: %s \n", r.ServiceMethod, string(resp.Payload))
 	}
 	return nil
 }
