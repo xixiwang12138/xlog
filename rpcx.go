@@ -19,7 +19,7 @@ func (handler *serverPreHandle) PostReadRequest(ctx context.Context, r *protocol
 		if ok {
 			xl.reqId = reqId
 		}
-		xl.Infof("[RPC Handle] %s, Args: %s \n", r.ServiceMethod, string(r.Payload))
+		xl.Infof("[RPC Reply] %s, Args: %+v \n", r.ServiceMethod, r)
 	}
 	return nil
 }
@@ -30,6 +30,7 @@ func (handler *serverAfterHandle) PreWriteResponse(ctx context.Context, r *proto
 	reqId, ok := r.Metadata[ReqHeader]
 	if !r.IsOneway() && !r.IsHeartbeat() {
 		xl := NewLogger()
+		xl.SetFlags(Ldate | Ltime | Llevel)
 		if ok {
 			xl.reqId = reqId
 		}

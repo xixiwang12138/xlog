@@ -30,7 +30,7 @@ func TracingLogger(ctxGenerator func() context.Context) gin.HandlerFunc {
 		ctx.Header(ReqHeader, traceId)
 		end := time.Now()
 		xl.SetFlags(Ldate | Ltime)
-		xl.Infof("%-12s %-12s  ===>  %dms\n", ctx.Request.Method, ctx.Request.RequestURI, end.UnixMilli()-start.UnixMilli())
+		xl.Infof("%-12s %-30s  ===>  %dms\n", ctx.Request.Method, ctx.Request.RequestURI, end.UnixMilli()-start.UnixMilli())
 		xl.SetFlags(Ldefault)
 	}
 }
