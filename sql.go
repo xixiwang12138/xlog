@@ -2,7 +2,9 @@ package xlog
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
+	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"time"
 )
@@ -35,4 +37,16 @@ func (l *gormLogger) Trace(ctx context.Context, begin time.Time, fc func() (sql 
 	elapsed := time.Since(begin)
 	sql, rows := fc()
 	l.Info(ctx, fmt.Sprintf("[SQL] %s ==> (%dms) | rows: %d", sql, elapsed.Milliseconds(), rows))
+}
+
+func (x *XLogger) SqlTxBegin(db *gorm.DB, opts ...*sql.TxOptions) {
+	x.PutValue(GormTransactionHeader, db.Begin(opts...))
+}
+
+func (x *XLogger) Tx() (tx *gorm.DB) {
+	tx, ok := x.Value(GormTransactionHeader).(*gorm.DB)
+	if ok {
+		return nil
+	}
+	return tx
 }
