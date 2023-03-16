@@ -11,8 +11,8 @@ type XLogger struct {
 	reqId string
 }
 
-func (x *XLogger) Value(arg any) any {
-	return x.reqId
+func (x *XLogger) PutValue(key, val any) {
+	x.Context = context.WithValue(x.Context, key, val)
 }
 
 // NewXLogger 创建一个具有reqId前缀的Logger
@@ -30,15 +30,5 @@ func NewLogger() *XLogger {
 	return &XLogger{
 		Logger:  New(os.Stdout, "", Ldefault),
 		Context: context.Background(),
-	}
-}
-
-func NewCtxLogger(ctx context.Context) *XLogger {
-	reqId := ctx.Value(ReqHeader).(string)
-	prefix := "[" + reqId + "]"
-	return &XLogger{
-		Logger:  New(os.Stdout, prefix, Ldefault),
-		Context: context.Background(),
-		reqId:   reqId,
 	}
 }
